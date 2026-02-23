@@ -2,12 +2,14 @@ package com.food.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
 @Data
-public class User {
+@EqualsAndHashCode(callSuper = true)
+public class User extends UserInformation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
