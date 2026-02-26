@@ -30,11 +30,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<User>> userLogin(@RequestBody LoginRequest loginRequest){
-
-        userService.loginUser(loginRequest);
-
-
-
         return new ResponseEntity<>(userService.loginUser(loginRequest), HttpStatus.CREATED);
     }
 }

@@ -43,7 +43,10 @@ public class UserServiceImpl implements UserService{
 
 
         if (byEmailOrMobile.isPresent() &&
-                byEmailOrMobile.get().getPassword().equals(loginRequest.getPassword())) {
+                passwordEncoder.matches(
+                        loginRequest.getPassword(),           // raw password
+                        byEmailOrMobile.get().getPassword()   // encoded password from DB
+                )) {
 
             return ApiResponse.<User>builder()
                     .status("success")
