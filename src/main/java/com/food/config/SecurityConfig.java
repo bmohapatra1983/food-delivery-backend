@@ -29,7 +29,7 @@ public class SecurityConfig {
 
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/user/registration").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user/*").permitAll()
                         .anyRequest().authenticated()
                 )
 

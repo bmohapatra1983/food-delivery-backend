@@ -1,5 +1,6 @@
 package com.food.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,17 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@JsonPropertyOrder({
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "mobile",
+        "userType",
+        "is_active",
+        "is_verified",
+        "last_login"
+})
 public class User extends UserInformation {
 
     @Id
