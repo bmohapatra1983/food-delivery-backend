@@ -2,6 +2,7 @@ package com.food.controller.user;
 
 import com.food.model.ApiResponse;
 import com.food.model.User;
+import com.food.model.dto.ChangePasswordRequest;
 import com.food.model.dto.LoginRequest;
 import com.food.model.dto.LoginResponse;
 import com.food.model.dto.UserRegistrationRequest;
@@ -31,5 +32,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<User>> userLogin(@RequestBody LoginRequest loginRequest){
         return new ResponseEntity<>(userService.loginUser(loginRequest), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<ApiResponse<User>> changePassword(@RequestBody ChangePasswordRequest passwordRequest){
+        return new ResponseEntity<>(userService.changePassword(passwordRequest), HttpStatus.CREATED);
     }
 }
