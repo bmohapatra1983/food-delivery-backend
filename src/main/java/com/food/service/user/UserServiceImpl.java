@@ -2,6 +2,7 @@ package com.food.service.user;
 
 import com.food.model.ApiResponse;
 import com.food.model.User;
+import com.food.model.dto.ChangePasswordRequest;
 import com.food.model.dto.LoginRequest;
 import com.food.model.dto.LoginResponse;
 import com.food.model.dto.UserRegistrationRequest;
@@ -58,8 +59,33 @@ public class UserServiceImpl implements UserService{
         return ApiResponse.<User>builder()
                 .status("NOT_FOUND")
                 .httpStatus(HttpStatus.NO_CONTENT.value())
-                .message("User Does Not Exist!")
+                .message("User ID/Password Not match!")
                 .data(null)
                 .build();
+    }
+
+    @Override
+    public ApiResponse<User> changePassword(ChangePasswordRequest passwordRequest) {
+        Optional<User> userData = userDao.findByEmail(passwordRequest.getMailId());
+
+        if(userData.isPresent()){
+            User user = userData.get();
+            user.setPassword(passwordEncoder.encode(passwordRequest.getNewPassword()));
+            userDao.save(user);
+            return ApiResponse.<User>builder()
+                    .status("success")
+                    .httpStatus(HttpStatus.OK.value())
+                    .message("Password Updated Successfully!")
+                    .data(null)
+                    .build();
+        }
+        else {
+            return ApiResponse.<User>builder()
+                    .status("failure")
+                    .httpStatus(HttpStatus.NO_CONTENT.value())
+                    .message("User Id Not Found!")
+                    .data(null)
+                    .build();
+        }
     }
 }
