@@ -2,9 +2,7 @@ package com.food.service.user;
 
 import com.food.model.ApiResponse;
 import com.food.model.User;
-import com.food.model.dto.ChangePasswordRequest;
-import com.food.model.dto.LoginRequest;
-import com.food.model.dto.UserRegistrationRequest;
+import com.food.model.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,7 +11,9 @@ import java.util.Optional;
 public interface UserService {
     ApiResponse<User> userRegistration(User user);
 
-    ApiResponse<User> loginUser(LoginRequest loginRequest);
+    ApiResponse<LoginResponse> loginUser(LoginRequest loginRequest);
 
-    ApiResponse<User> changePassword(ChangePasswordRequest passwordRequest);
+    ApiResponse<User> changePassword(ChangePasswordRequest passwordRequest, String token);
+
+    ApiResponse<LogoutResponse> logoutUser(String token);
 }

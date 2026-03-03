@@ -2,20 +2,13 @@ package com.food.controller.user;
 
 import com.food.model.ApiResponse;
 import com.food.model.User;
-import com.food.model.dto.ChangePasswordRequest;
-import com.food.model.dto.LoginRequest;
-import com.food.model.dto.LoginResponse;
-import com.food.model.dto.UserRegistrationRequest;
+import com.food.model.dto.*;
 import com.food.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -30,12 +23,27 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<User>> userLogin(@RequestBody LoginRequest loginRequest){
-        return new ResponseEntity<>(userService.loginUser(loginRequest), HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<LoginResponse>> userLogin(@RequestBody LoginRequest loginRequest){
+        return new ResponseEntity<>(userService.loginUser(loginRequest), HttpStatus.OK);
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<ApiResponse<User>> changePassword(@RequestBody ChangePasswordRequest passwordRequest){
-        return new ResponseEntity<>(userService.changePassword(passwordRequest), HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<User>> changePassword(@RequestBody ChangePasswordRequest passwordRequest, @RequestHeader("Authorization") String authHeader){
+        // Extract token from Bearer <token>
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        return new ResponseEntity<>(userService.changePassword(passwordRequest, token), HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<LogoutResponse>> logoutUser(@RequestHeader("Authorization") String authHeader){
+        // Extract token from Bearer <token>
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        return new ResponseEntity<>(userService.logoutUser(token), HttpStatus.OK);
     }
 }

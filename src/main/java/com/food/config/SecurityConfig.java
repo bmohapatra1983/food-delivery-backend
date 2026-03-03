@@ -1,5 +1,6 @@
 package com.food.config;
 
+import com.food.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,10 +11,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,12 +36,17 @@ public class SecurityConfig {
 
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/user/*").permitAll()
+                        // Allow registration and login without authentication
+                        .requestMatchers(HttpMethod.POST, "/user/registration").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+                        // Allow logout without requiring authentication (but can provide token)
+                        .requestMatchers(HttpMethod.POST, "/user/logout").permitAll()
+                        // All other requests require authentication
                         .anyRequest().authenticated()
                 )
 
-                // Enable Basic Auth (for testing)
-                .httpBasic(Customizer.withDefaults());
+                // Add JWT filter before UsernamePasswordAuthenticationFilter
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
