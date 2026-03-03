@@ -7,16 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
-
-    private boolean success;
+@AllArgsConstructor
+public class LogoutResponse {
     private String message;
-    private String token;
-    private String refreshToken;
+    private boolean success;
     private Long userId;
-    private String email;
-    private String userType;
-    private long expiresIn;
 }
+
