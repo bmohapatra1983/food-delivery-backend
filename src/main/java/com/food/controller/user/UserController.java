@@ -1,6 +1,8 @@
 package com.food.controller.user;
 
 import com.food.model.ApiResponse;
+import com.food.model.dto.KitchenCategory.KitchenCategoryMaster;
+import com.food.model.dto.KitchenCategory.KitchenStoreInformation;
 import com.food.model.User;
 import com.food.model.dto.*;
 import com.food.service.user.UserService;
@@ -45,5 +47,33 @@ public class UserController {
             token = authHeader.substring(7);
         }
         return new ResponseEntity<>(userService.logoutUser(token), HttpStatus.OK);
+    }
+
+    @PostMapping("/kitchenStore")
+    public ResponseEntity<ApiResponse<KitchenStoreInformation>> saveKitchenStore(
+            @RequestBody KitchenStoreInformation storeInfo,
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+
+        return new ResponseEntity<>(
+                userService.saveKitchenStore(storeInfo), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/kitchenCategory")
+    public ResponseEntity<ApiResponse<KitchenCategoryMaster>> saveKitchenCategory(
+            @RequestBody KitchenCategoryMaster categoryInfo,
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+
+        return new ResponseEntity<>(
+                userService.saveKitchenCategory(categoryInfo), HttpStatus.CREATED);
     }
 }
