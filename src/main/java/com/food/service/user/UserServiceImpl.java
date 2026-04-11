@@ -3,6 +3,8 @@ package com.food.service.user;
 import com.food.model.ApiResponse;
 import com.food.model.User;
 import com.food.model.dto.*;
+import com.food.model.dto.KitchenCategory.KitchenCategoryMaster;
+import com.food.model.dto.KitchenCategory.KitchenStoreInformation;
 import com.food.repository.user.UserDao;
 import com.food.util.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,5 +201,25 @@ public class UserServiceImpl implements UserService{
                     .data(null)
                     .build();
         }
+    }
+
+    @Override
+    public ApiResponse<KitchenStoreInformation> saveKitchenStore(KitchenStoreInformation storeInfo) {
+        return ApiResponse.<KitchenStoreInformation>builder()
+                .status("success")
+                .httpStatus(HttpStatus.CREATED.value())
+                .message("Kitchen store saved successfully")
+                .data(storeInfo)
+                .build();
+    }
+
+    @Override
+    public ApiResponse<KitchenCategoryMaster> saveKitchenCategory(KitchenCategoryMaster categoryInfo) {
+        return ApiResponse.<KitchenCategoryMaster>builder()
+                .status("success")
+                .httpStatus(HttpStatus.CREATED.value())
+                .message("Kitchen category saved successfully")
+                .data(categoryInfo)
+                .build();
     }
 }
