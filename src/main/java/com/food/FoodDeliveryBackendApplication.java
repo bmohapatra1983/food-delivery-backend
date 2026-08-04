@@ -9,7 +9,8 @@ public class FoodDeliveryBackendApplication {
 	public static void main(String[] args) {
 
         SpringApplication.run(FoodDeliveryBackendApplication.class, args);
-        System.out.println("Application Started..");
+        System.out.println("Application Started hh..");
+
 	}
 
 }
